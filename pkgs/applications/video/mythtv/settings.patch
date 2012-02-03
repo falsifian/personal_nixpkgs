@@ -1,0 +1,10 @@
+diff -urN mythtv-0.18.1-orig/settings.pro mythtv-0.18.1/settings.pro
+--- mythtv-0.18.1-orig/settings.pro	2005-10-22 15:32:48.000000000 +0200
++++ mythtv-0.18.1/settings.pro	2005-10-22 15:35:01.000000000 +0200
+@@ -1,5 +1,6 @@
+ CONFIG += $$CCONFIG
+ 
++PREFIX = $$(out)
+ isEmpty( PREFIX ) {
+     PREFIX = /usr/local
+ }

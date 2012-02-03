@@ -1,0 +1,20 @@
+diff -Nuar coq-8.3/configure coq-8.3.nixos/configure
+--- coq-8.3/configure	2010-10-14 16:02:46.000000000 +0200
++++ coq-8.3.nixos/configure	2010-11-04 09:57:16.000000000 +0100
+@@ -394,7 +394,6 @@
+ 	 ocamlyaccexec=$CAMLBIN/ocamlyacc
+ 	 ocamlmktopexec=$CAMLBIN/ocamlmktop
+ 	 ocamlmklibexec=$CAMLBIN/ocamlmklib
+-	 camlp4oexec=$CAMLBIN/camlp4o
+ esac
+ 
+ if test ! -f "$CAMLC" ; then
+@@ -637,7 +636,7 @@
+             no)  LABLGTKLIB=+lablgtk2                   # Pour le message
+                  LABLGTKINCLUDES="-I $LABLGTKLIB";;     # Pour le makefile
+             yes) LABLGTKLIB="$lablgtkdir"               # Pour le message
+-                 LABLGTKINCLUDES="-I \"$LABLGTKLIB\"";; # Pour le makefile
++                 LABLGTKINCLUDES="-I $LABLGTKLIB";; # Pour le makefile
+         esac;;
+     no) LABLGTKINCLUDES="";;
+ esac

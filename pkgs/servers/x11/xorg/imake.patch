@@ -1,0 +1,37 @@
+diff -ru -x '*~' imake-1.0.3-orig/imake.c imake-1.0.3/imake.c
+--- imake-1.0.3-orig/imake.c	2009-10-16 23:45:43.000000000 +0200
++++ imake-1.0.3/imake.c	2010-07-19 12:17:12.000000000 +0200
+@@ -1035,6 +1035,7 @@
+ static void
+ get_distrib(FILE *inFile)
+ {
++#if 0
+   struct stat sb;
+ 
+   static char* suse = "/etc/SuSE-release";
+@@ -1080,6 +1081,7 @@
+      * at the content of /etc/debian_version */
+     return;
+   }
++#endif  
+   /* what's the definitive way to tell what any particular distribution is? */
+ 
+   fprintf (inFile, "%s\n", "#define DefaultLinuxDistribution LinuxUnknown");
+@@ -1328,6 +1330,7 @@
+ static boolean
+ get_gcc(char *cmd)
+ {
++#if 0
+   struct stat sb;
+     static char* gcc_path[] = {
+ #if defined(linux) || \
+@@ -1376,6 +1379,9 @@
+ 	}
+       }
+     return FALSE;
++#endif
++    strcpy (cmd, "gcc");
++    return TRUE;
+ }
+ 
+ #if defined CROSSCOMPILE || !defined __UNIXOS2__
