@@ -4,8 +4,8 @@ buildPythonPackage {
   name = "offlineimap-6.4.0";
 
   src = fetchgit {
-    url = "https://github.com/nicolas33/offlineimap.git";
-    rev = "c1120c9158f273fe691f89b9eefc34b2623d5a7a";  # 6.4.0 release
+    url = "https://github.com/spaetz/offlineimap.git";
+    rev = "a242b985bfd6e1c7849834b5da60bfd7f57b204a";  # 6.5.2.1 release
   };
 
   propagatedBuildInputs = [ ssl ];
