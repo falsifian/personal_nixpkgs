@@ -1,7 +1,7 @@
 { fetchgit, buildPythonPackage, ssl }:
 
 buildPythonPackage {
-  name = "offlineimap-6.4.0";
+  name = "offlineimap-6.5.2.1";
 
   src = fetchgit {
     url = "https://github.com/spaetz/offlineimap.git";
