@@ -1,5 +1,5 @@
-{stdenv, fetchurl, pkgconfig, xlibs, xineLib, libpng, readline, ncurses, curl
-, lirc, xz, shared_mime_info }:
+{stdenv, fetchurl, pkgconfig, xlibs, xineLib, libpng12, readline, ncurses, curl
+, lirc, shared_mime_info }:
 
 stdenv.mkDerivation rec {
   name = "xine-ui-0.99.6";
@@ -9,10 +9,10 @@ stdenv.mkDerivation rec {
     sha256 = "1wwylnckm5kfq5fi154w8jqf5cwvp7c1ani15q7sgfrfdkmy7caf";
   };
   
-  buildNativeInputs = [ xz pkgconfig shared_mime_info ];
+  buildNativeInputs = [ pkgconfig shared_mime_info ];
 
   buildInputs =
-    [ xineLib libpng readline ncurses curl lirc
+    [ xineLib libpng12 readline ncurses curl lirc
       xlibs.xlibs xlibs.libXext xlibs.libXv xlibs.libXxf86vm xlibs.libXtst xlibs.inputproto
       xlibs.libXinerama xlibs.libXi xlibs.libXft
     ];

@@ -1,4 +1,4 @@
-{ fetchgit, buildPythonPackage, ssl }:
+{ fetchgit, buildPythonPackage }:
 
 buildPythonPackage {
   name = "offlineimap-6.5.2.1";
@@ -7,8 +7,6 @@ buildPythonPackage {
     url = "https://github.com/spaetz/offlineimap.git";
     rev = "a242b985bfd6e1c7849834b5da60bfd7f57b204a";  # 6.5.2.1 release
   };
-
-  propagatedBuildInputs = [ ssl ];
 
   doCheck = false;
 

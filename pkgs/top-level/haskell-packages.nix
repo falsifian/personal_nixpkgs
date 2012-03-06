@@ -148,7 +148,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
     regexBase    = self.regexBase_0_93_2;       # 7.4.1 ok
     regexCompat  = self.regexCompat_0_93_1;     # 7.4.1 ok
     regexPosix   = self.regexPosix_0_95_1;      # 7.4.1 ok
-    stm          = self.stm_2_2_0_1;            # 7.4.1 ok
+    stm          = self.stm_2_3;		# 7.4.1 ok
     syb          = self.syb_0_3_6;              # 7.4.1 ok
     xhtml        = self.xhtml_3000_2_0_5;       # 7.4.1 ok
     zlib         = self.zlib_0_5_3_3;           # 7.4.1 ok
@@ -160,7 +160,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
     cabalInstall = self.cabalInstall_0_10_2;    # 7.4.1 fails
     alex         = self.alex_3_0_1;             # 7.4.1 ok
     happy        = self.happy_1_18_9;           # 7.4.1 ok
-    haddock      = self.haddock_2_9_2;          # 7.4.1 fails
+    haddock      = self.haddock_2_10_0;         # 7.4.1 ok
   };
 
   haskellPlatformDefaults_future =
@@ -456,9 +456,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   base64String = callPackage ../development/libraries/haskell/base64-string {};
 
-  base64Bytestring_0_1_0_3 = callPackage ../development/libraries/haskell/base64-bytestring/0.1.0.3.nix {};
-  base64Bytestring_0_1_1_0 = callPackage ../development/libraries/haskell/base64-bytestring/0.1.1.0.nix {};
-  base64Bytestring = self.base64Bytestring_0_1_0_3; # Version 0.1.1.0 has serious performance issues.
+  base64Bytestring = callPackage ../development/libraries/haskell/base64-bytestring {};
 
   baseUnicodeSymbols = callPackage ../development/libraries/haskell/base-unicode-symbols {};
 
@@ -911,6 +909,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   hxtUnicode = callPackage ../development/libraries/haskell/hxt-unicode {};
 
+  IfElse = callPackage ../development/libraries/haskell/IfElse {};
+
   ieee754 = callPackage ../development/libraries/haskell/ieee754 {};
 
   instantGenerics = callPackage ../development/libraries/haskell/instant-generics {};
@@ -1287,7 +1287,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   stm_2_1_1_2 = callPackage ../development/libraries/haskell/stm/2.1.1.2.nix {};
   stm_2_1_2_1 = callPackage ../development/libraries/haskell/stm/2.1.2.1.nix {};
   stm_2_2_0_1 = callPackage ../development/libraries/haskell/stm/2.2.0.1.nix {};
-  stm = self.stm_2_1_1_2;
+  stm_2_3 = callPackage ../development/libraries/haskell/stm/2.3.nix {};
+  stm = self.stm_2_3;
 
   storableComplex = callPackage ../development/libraries/haskell/storable-complex {};
 
@@ -1560,7 +1561,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   haddock_2_7_2 = callPackage ../development/tools/documentation/haddock/2.7.2.nix {};
   haddock_2_9_2 = callPackage ../development/tools/documentation/haddock/2.9.2.nix {};
   haddock_2_9_4 = callPackage ../development/tools/documentation/haddock/2.9.4.nix {};
-  haddock = self.haddock_2_9_4;
+  haddock_2_10_0 = callPackage ../development/tools/documentation/haddock/2.10.0.nix {};
+  haddock = self.haddock_2_10_0;
 
   happy_1_18_4 = callPackage ../development/tools/parsing/happy/1.18.4.nix {};
   happy_1_18_5 = callPackage ../development/tools/parsing/happy/1.18.5.nix {};

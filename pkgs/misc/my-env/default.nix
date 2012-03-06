@@ -45,18 +45,16 @@ mkDerivation {
   # the buildNativeInputs environment variable.
   buildNativeInputs = [ ] ++ buildInputs ;
   name = "env-${name}";
-  phases = [ "buildPhase" ];
+  phases = [ "buildPhase" "fixupPhase" ];
   setupNew = substituteAll {
     src = ../../stdenv/generic/setup.sh;
-    preHook="";
-    postHook="";
     initialPath= (import ../../stdenv/common-path.nix) { inherit pkgs; };
     gcc = stdenv.gcc;
   };
 
   buildPhase = ''
     set -x
-    mkdir -p "$out/dev-envs" "$out/nix-support"
+    mkdir -p "$out/dev-envs" "$out/nix-support" "$out/bin"
     s="$out/nix-support/setup-new-modified"
     cp "$setupNew" "$s"
     # shut some warning up.., do not use set -e
@@ -111,6 +109,12 @@ mkDerivation {
       export PATH
       echo $name loaded
     EOF
-    exit 0
+
+    cat >> "$out/bin/load-''${name/env-/}-env" << EOF
+    #!/bin/sh
+
+    source "$out/dev-envs/''${name/env-/}"
+    EOF
+    chmod +x "$out/bin/load-''${name/env-/}-env" 
   '';
 }
