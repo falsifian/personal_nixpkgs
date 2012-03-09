@@ -1580,7 +1580,7 @@ let
   x11_ssh_askpass = callPackage ../tools/networking/x11-ssh-askpass { };
 
   xbursttools = assert stdenv ? glibc; import ../tools/misc/xburst-tools {
-    inherit stdenv fetchgit autoconf automake libusb confuse;
+    inherit stdenv fetchgit autoconf automake libusb confuse pkgconfig;
     # It needs a cross compiler for mipsel to build the firmware it will
     # load into the Ben Nanonote
     gccCross =
@@ -1822,7 +1822,7 @@ let
       cross = assert crossSystem != null; crossSystem;
     });
 
-  gcc_realCross = gcc45_realCross;
+  gcc_realCross = gcc46_realCross;
 
   gccCrossStageStatic = let
       isMingw = (stdenv.cross.libc == "msvcrt");
@@ -1932,6 +1932,20 @@ let
     binutilsCross = null;
   }));
 
+  gcc47 = lowPrio (wrapGCC (lib.overrideDerivation gcc46_debug.gcc (a: {
+    name = "gcc-debug-4.7.0rc20120302";
+    src = fetchurl {
+      url = "ftp://gcc.gnu.org/pub/gcc/snapshots/4.7.0-RC-20120302/gcc-4.7.0-RC-20120302.tar.bz2";
+      sha256 = "13clix3cqf93rmkgmb9izqz0ld0h0xrgpirsjr0fs0f7c86c935l";
+    };
+
+    configureFlags = a.configureFlags
+      # This flag replaces `no-sys-dirs.patch'.
+      + " --with-native-system-header-dir=${stdenv.glibc}/include";
+
+    patches = [];
+  })));
+
   gccApple =
     wrapGCC ( (if stdenv.system == "i686-darwin" then import ../development/compilers/gcc/4.2-apple32 else import ../development/compilers/gcc/4.2-apple64) {
       inherit fetchurl stdenv noSysDirs;
@@ -1943,7 +1957,7 @@ let
     texinfo = texinfo49;
   });
 
-  gfortran = gfortran45;
+  gfortran = gfortran46;
 
   gfortran40 = wrapGCC (gcc40.gcc.override {
     langFortran = true;
@@ -3471,9 +3485,7 @@ let
 
   gamin = callPackage ../development/libraries/gamin { };
 
-  gav = callPackage ../games/gav {
-    stdenv = overrideGCC stdenv gcc41;
-  };
+  gav = callPackage ../games/gav { };
 
   gdome2 = callPackage ../development/libraries/gdome2 {
     inherit (gnome) gtkdoc;
@@ -3594,9 +3606,9 @@ let
     installLocales = getConfig [ "glibc" "locales" ] false;
   };
 
-  glibcLocales = callPackage ../development/libraries/glibc/2.14/locales.nix { };
+  glibcLocales = callPackage ../development/libraries/glibc/2.13/locales.nix { };
 
-  glibcInfo = callPackage ../development/libraries/glibc/2.14/info.nix { };
+  glibcInfo = callPackage ../development/libraries/glibc/2.13/info.nix { };
 
   glibc_multi =
       runCommand "${glibc.name}-multi"
@@ -3642,7 +3654,7 @@ let
       callPackage ../development/libraries/gmp/4.3.1.nix { }
     else
       callPackage ../development/libraries/gmp/4.3.2.nix { };
-  
+
   gobjectIntrospection = callPackage ../development/libraries/gobject-introspection { };
 
   goffice = callPackage ../development/libraries/goffice {
@@ -3707,13 +3719,15 @@ let
 
   glibmm = callPackage ../development/libraries/glibmm/2.28.x.nix { };
 
+  glib_networking = callPackage ../development/libraries/glib-networking {};
+
   atk = callPackage ../development/libraries/atk/2.2.x.nix { };
 
   atkmm = callPackage ../development/libraries/atkmm/2.22.x.nix { };
 
   cairo = callPackage ../development/libraries/cairo { };
 
-  pango = callPackage ../development/libraries/pango/1.28.x.nix { };
+  pango = callPackage ../development/libraries/pango/1.29.x.nix { };
 
   pangomm = callPackage ../development/libraries/pangomm/2.28.x.nix { };
 
@@ -3724,8 +3738,6 @@ let
   gtk = pkgs.gtk2;
 
   gtkmm = callPackage ../development/libraries/gtkmm/2.24.x.nix { };
-
-  pango129 = lowPrio (callPackage ../development/libraries/pango/1.29.x.nix { });
 
   gtk3 = lowPrio (callPackage ../development/libraries/gtk+/3.2.x.nix { });
 
@@ -3904,6 +3916,8 @@ let
 
   libcm = callPackage ../development/libraries/libcm { };
 
+  libcroco = callPackage ../development/libraries/libcroco {};
+
   libctemplate = callPackage ../development/libraries/libctemplate { };
 
   libcue = callPackage ../development/libraries/libcue { };
@@ -3958,6 +3972,8 @@ let
 
   libgdata = (newScope gnome) ../development/libraries/libgdata {};
   libgdata_0_6 = (newScope gnome) ../development/libraries/libgdata/0.6.nix {};
+
+  libgnome_keyring = callPackage ../development/libraries/libgnome-keyring { };
 
   liblo = callPackage ../development/libraries/liblo { };
 
@@ -4154,6 +4170,8 @@ let
   libpseudo = callPackage ../development/libraries/libpseudo { };
 
   libqalculate = callPackage ../development/libraries/libqalculate { };
+
+  librsvg = callPackage ../development/libraries/librsvg { };
 
   librsync = callPackage ../development/libraries/librsync { };
 
@@ -4728,7 +4746,9 @@ let
 
   vtk = callPackage ../development/libraries/vtk { };
 
-  vxl = callPackage ../development/libraries/vxl { };
+  vxl = callPackage ../development/libraries/vxl {
+    libpng = libpng12;
+  };
 
   webkit =
     builderDefsPackage ../development/libraries/webkit {
@@ -4927,6 +4947,13 @@ let
 
   perlPackages = recurseIntoAttrs (import ./perl-packages.nix {
     inherit pkgs;
+  });
+
+  perl510Packages = recurseIntoAttrs (import ./perl-packages.nix {
+    pkgs = pkgs // {
+      perl = perl510;
+      buildPerlPackage = import ../development/perl-modules/generic perl510;
+    };
   });
 
   perlXMLParser = perlPackages.XMLParser;
@@ -5770,8 +5797,6 @@ let
 
   libsexy = callPackage ../development/libraries/libsexy { };
 
-  librsvg = gnome.librsvg;
-
   libsepol = callPackage ../os-specific/linux/libsepol { };
 
   libsmbios = callPackage ../os-specific/linux/libsmbios { };
@@ -6139,6 +6164,8 @@ let
   freefont_ttf = callPackage ../data/fonts/freefont-ttf { };
 
   gentium = callPackage ../data/fonts/gentium {};
+
+  gsettings_desktop_schemas = callPackage ../data/misc/gsettings-desktop-schemas {};
 
   hicolor_icon_theme = callPackage ../data/misc/hicolor-icon-theme { };
 
@@ -7121,10 +7148,12 @@ let
   };
 
   go_oo = callPackage ../applications/office/openoffice/go-oo.nix {
-    inherit (perlPackages) ArchiveZip CompressZlib;
+    inherit (perl510Packages) ArchiveZip CompressZlib;
     inherit (gnome) GConf ORBit2;
     neon = neon029;
     libwpd = libwpd_08;
+    /* It uses Switch.pm, deprecated in perl 5.14 */
+    perl = perl510;
     zip = zip.override { enableNLS = false; };
   };
 
@@ -7425,10 +7454,10 @@ let
   uwimap = callPackage ../tools/networking/uwimap { };
 
   uzbl = builderDefsPackage (import ../applications/networking/browsers/uzbl) {
-    inherit pkgconfig webkit makeWrapper;
+    inherit pkgconfig webkit makeWrapper glib_networking;
     inherit (gtkLibs) gtk glib;
     inherit (xlibs) libX11 kbproto;
-    inherit (gnome) glib_networking libsoup;
+    inherit (gnome) libsoup;
   };
 
   valknut = callPackage ../applications/networking/p2p/valknut { };
@@ -7825,7 +7854,7 @@ let
 
   spring = callPackage ../games/spring { };
 
-  springLobby = callPackage ../games/spring/spring-lobby.nix { };
+  springLobby = callPackage ../games/spring/springlobby.nix { };
 
   stardust = callPackage ../games/stardust {};
 
@@ -8265,6 +8294,8 @@ let
 
   eukleides = callPackage ../applications/science/math/eukleides { };
 
+  gap = callPackage ../applications/science/math/gap { };
+
   maxima = callPackage ../applications/science/math/maxima { };
 
   wxmaxima = callPackage ../applications/science/math/wxmaxima { };
@@ -8564,9 +8595,7 @@ let
   vice = callPackage ../misc/emulators/vice { };
 
   vimprobable2 = callPackage ../applications/networking/browsers/vimprobable2 {
-    inherit stdenv fetchurl makeWrapper perl pkgconfig webkit gtk;
-    inherit (xlibs) libX11;
-    inherit (gnome) libsoup glib_networking;
+    inherit (gnome) libsoup;
   };
 
   VisualBoyAdvance = callPackage ../misc/emulators/VisualBoyAdvance { };
@@ -8580,7 +8609,9 @@ let
 
   xosd = callPackage ../misc/xosd { };
 
-  xsane = callPackage ../misc/xsane { };
+  xsane = callPackage ../misc/xsane {
+    libpng = libpng12;
+  };
 
   yafc = callPackage ../applications/networking/yafc { };
 

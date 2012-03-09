@@ -1,16 +1,16 @@
 { stdenv, fetchurl, cmake, wxGTK, openal, pkgconfig, curl, libtorrentRasterbar
-, gettext, bash, gawk, boost }:
+, gettext, bash, gawk, boost}:
 stdenv.mkDerivation rec {
 
-  name = "spring-lobby-${version}";
-  version = "0.139";
+  name = "springlobby-${version}";
+  version = "0.141";
 
   src = fetchurl {
     url = "http://www.springlobby.info/tarballs/springlobby-${version}.tar.bz2";
-    sha256 = "0ibvv2p4c0qa933mr3hfn5lp8c6h1dycl6k6i1n2gvpa8jr598m5";
+    sha256 = "37cf3aa1ed78a0ded782cc5c692301619dbb2cf4749bccbf059c51707daaf734";
   };
 
-  buildInputs = [ cmake wxGTK openal pkgconfig curl gettext libtorrentRasterbar boost ];
+  buildInputs = [ cmake wxGTK openal pkgconfig curl gettext libtorrentRasterbar boost];
 
   prePatch = ''
     substituteInPlace tools/regen_config_header.sh --replace "#!/usr/bin/env bash" "#!${bash}/bin/bash"
@@ -18,13 +18,18 @@ stdenv.mkDerivation rec {
     substituteInPlace CMakeLists.txt --replace "boost_system-mt" "boost_system"
   '';
 
+  # for now sound is disabled as it causes a linker error with alure i can't resolve (qknight)
+  cmakeFlags = "-DOPTION_SOUND:BOOL=OFF"; 
+
   enableParallelBuilding = true;
+
+  #buildPhase = "make VERBOSE=1";
 
   meta = with stdenv.lib; {
     homepage = http://springlobby.info/;
     description = "A free cross-platform lobby client for the Spring RTS project.";
     license = licenses.gpl2;
-    maintainers = [ maintainers.phreedom ];
-    platforms = platforms.all;
+    maintainers = [ maintainers.phreedom maintainers.qknight];
+    platforms = platforms.linux;
   };
 }
