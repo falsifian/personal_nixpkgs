@@ -36,6 +36,7 @@ with (import ./release-lib.nix);
   bind = linux;
   bison23 = all;
   bison24 = all;
+  bison25 = all;
   bitlbee = linux;
   bittorrent = linux;
   blender = linux;
@@ -137,12 +138,10 @@ with (import ./release-lib.nix);
   gsl = linux;
   guile = linux;  # tests fail on Cygwin
   gv = linux;
-  gw6c = linux;
   gzip = all;
   hal = linux;
   hal_info = linux;
   hddtemp = linux;
-  hdparm = linux;
   hello = all;
   host = linux;
   htmlTidy = all;
@@ -363,8 +362,8 @@ with (import ./release-lib.nix);
   };
 
   firefox36Pkgs.firefox = linux;
-  firefox90Pkgs.firefox = linux;
-  firefox100Pkgs.firefox = linux;
+  firefox10Pkgs.firefox = linux;
+  firefox11Pkgs.firefox = linux;
 
   gnome = {
     gnome_panel = linux;

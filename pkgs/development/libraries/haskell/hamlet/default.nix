@@ -4,8 +4,8 @@
 
 cabal.mkDerivation (self: {
   pname = "hamlet";
-  version = "0.10.8";
-  sha256 = "1vlp8vwaipz757vnd95gcdi9dkrpbgfdlsb3kgjivsj7rqbmxf7z";
+  version = "0.10.9.1";
+  sha256 = "1z2g7ymb8ihx13dkfq0k0s2fn1k6nig8h306i8p4q76wy7ybw3g0";
   buildDepends = [
     blazeBuilder blazeHtml failure parsec shakespeare text
   ];
@@ -14,9 +14,6 @@ cabal.mkDerivation (self: {
     description = "Haml-like template files that are compile-time checked";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [
-      self.stdenv.lib.maintainers.andres
-      self.stdenv.lib.maintainers.simons
-    ];
+    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })

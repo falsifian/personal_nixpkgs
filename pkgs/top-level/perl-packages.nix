@@ -768,10 +768,10 @@ rec {
   };
 
   ClassXSAccessor = buildPerlPackage rec {
-    name = "Class-XSAccessor-1.11";
+    name = "Class-XSAccessor-1.13";
     src = fetchurl {
       url = "mirror://cpan/modules/by-module/Class/${name}.tar.gz";
-      sha256 = "0mf7rp73r1pzy47m4bp49jw8iwpi6l1drdpk4qqxik6n7nx15mh2";
+      sha256 = "1nj21xq8bqvfz2mafrfskzw2p2j48b5k3rqxgxk99lw5ysmkz834";
     };
   };
 
@@ -956,11 +956,11 @@ rec {
     propagatedBuildInputs = [ FileFindRule ];
   };
 
-  DataDump = buildPerlPackage {
-    name = "Data-Dump-1.11";
+  DataDump = buildPerlPackage rec {
+    name = "Data-Dump-1.21";
     src = fetchurl {
-      url = mirror://cpan/authors/id/G/GA/GAAS/Data-Dump-1.11.tar.gz;
-      sha256 = "0h5y40b6drgsf87nhwhqx1dprq70f98ibm03l9al4ndq7mrx97dd";
+      url = "mirror://cpan/modules/by-module/Data/${name}.tar.gz";
+      sha256 = "1fcy6q8p406ag8g50l7znns3kxazfb458l6kw8pbsp4axnkz9ydx";
     };
   };
 
@@ -1082,10 +1082,10 @@ rec {
   };
 
   DateTimeLocale = buildPerlPackage rec {
-    name = "DateTime-Locale-0.42";
+    name = "DateTime-Locale-0.45";
     src = fetchurl {
       url = "mirror://cpan/authors/id/D/DR/DROLSKY/${name}.tar.gz";
-      sha256 = "1cvp9a4j6vy3xpbv6ipzcz1paw7gzal7lkrbm5ipiilji47d5gaw";
+      sha256 = "175grkrxiv012n6ch3z1sip4zprcili6m5zqi3njdk5c1gdvi8ca";
     };
     propagatedBuildInputs = [ListMoreUtils ParamsValidate];
   };
@@ -1259,12 +1259,12 @@ rec {
   };
 
   EmailAbstract = buildPerlPackage rec {
-    name = "Email-Abstract-3.001";
+    name = "Email-Abstract-3.004";
     src = fetchurl {
       url = "mirror://cpan/authors/id/R/RJ/RJBS/${name}.tar.gz";
-      sha256 = "1ziy44ibnwg4wjlm5lqdrys8x8xndxkzycnjwp2s6harjy2fqqxw";
+      sha256 = "0fiaagxc2hy5g3qiipv4cspkwbaggdmsxbll1f4jx2qnq5hm668d";
     };
-    propagatedBuildInputs = [EmailSimple];
+    propagatedBuildInputs = [ EmailSimple MROCompat ];
   };
 
   EmailAddress = buildPerlPackage rec {
@@ -1404,10 +1404,10 @@ rec {
   };
 
   ExtUtilsParseXS = buildPerlPackage rec {
-    name = "ExtUtils-ParseXS-3.03";
+    name = "ExtUtils-ParseXS-3.15";
     src = fetchurl {
       url = "mirror://cpan/modules/by-module/ExtUtils/${name}.tar.gz";
-      sha256 = "0ziq4iwn3bc1zyrm7aigc7nk5lxb69shzix9irxw17i5lfc923xg";
+      sha256 = "06baf0nsmdkfk50p4x9kss4ncm8h49gkzy8hl5cxbxdsab65gmrb";
     };
   };
 
@@ -3226,6 +3226,15 @@ rec {
     propagatedBuildInputs = [pkgs.subversion];
   };
 
+  Switch = buildPerlPackage rec {
+    name = "Switch";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/R/RG/RGARCIA/Switch-2.16.tar.gz";
+      sha256 = "1n7rgp1q3zwglv1pka3bnhq5g41334lwc53g31w6g44my8kqz31h";
+    };
+    doCheck = false;                             # FIXME: 2/293 test failures
+  };
+
   SysHostnameLong = buildPerlPackage rec {
     name = "Sys-Hostname-Long-1.4";
     src = fetchurl {
@@ -3330,10 +3339,10 @@ rec {
   };
 
   TestDeep = buildPerlPackage rec {
-    name = "Test-Deep-0.106";
+    name = "Test-Deep-0.109";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/F/FD/FDALY/${name}.tar.gz";
-      sha256 = "1ix4jc5k696sjhv01mvypmmf7a6kpm5wmgq01j644zjkaxh1minz";
+      url = "mirror://cpan/modules/by-module/Test/${name}.tar.gz";
+      sha256 = "0nqqxj00ln3b4pma47bj2rcpblpvipfrchqbcxahlq9lh1q4p5s6";
     };
     propagatedBuildInputs = [TestTester TestNoWarnings];
   };
@@ -3374,10 +3383,10 @@ rec {
   };
 
   TestLongString = buildPerlPackage rec {
-    name = "Test-LongString-0.11";
+    name = "Test-LongString-0.15";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/R/RG/RGARCIA/${name}.tar.gz";
-      sha256 = "0ln3117nfxzq7yxmfk77nnr7116inbjq4bf5v2p0hqlj4damx03d";
+      url = "mirror://cpan/modules/by-module/Test/${name}.tar.gz";
+      sha256 = "0r2i3a35l116ccwx88jwiii2fq4b8wm16sl1lkxm2kh44s4z7s5s";
     };
   };
 
@@ -3511,13 +3520,13 @@ rec {
   };
 
   TestWarn = buildPerlPackage rec {
-    name = "Test-Warn-0.21";
+    name = "Test-Warn-0.23";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/C/CH/CHORNY/${name}.zip";
-      sha256 = "0kc09lgl8irx01m276zndl7rsi0dhpkzdc5i1zm077pcj2z9ccmg";
+      url = "mirror://cpan/modules/by-module/Test/${name}.tar.gz";
+      sha256 = "1733s39s4pm0hsshvvjsv1vbri09l4g0g7yyg64y65yqcyanfdf0";
     };
     propagatedBuildInputs = [TestSimple TestException ArrayCompare TreeDAGNode];
-    buildInputs = [TestPod pkgs.unzip];
+    buildInputs = [TestPod];
   };
 
   TestWWWMechanize = buildPerlPackage rec {
@@ -3766,10 +3775,10 @@ rec {
   };
 
   VariableMagic = buildPerlPackage rec {
-    name = "Variable-Magic-0.46";
+    name = "Variable-Magic-0.48";
     src = fetchurl {
       url = "mirror://cpan/modules/by-module/Variable/${name}.tar.gz";
-      sha256 = "0z8fbna6nhn0hlvj1qbjw7yjn3dzl7pz1psmc8amv8kg6avgj33q";
+      sha256 = "124isksyw52br0y304dq4fcm26jk1v44s6ni1xd10nnl26fwmzbw";
     };
   };
 

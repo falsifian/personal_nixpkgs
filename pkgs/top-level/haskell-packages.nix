@@ -166,10 +166,12 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   haskellPlatformDefaults_future =
     self : self.haskellPlatformArgs_future self // {
       mtl1 = self.mtl_1_1_1_1; # 7.2 ok, 7.3 ok
+      binary = null; # now a core package
     };
 
   haskellPlatformDefaults_HEAD =
     self : self.haskellPlatformDefaults_future self // {
+      binary = null; # now a core package
     };
 
   haskellPlatformArgs_2011_4_0_0 = self : {
@@ -432,6 +434,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   ansiWlPprint = callPackage ../development/libraries/haskell/ansi-wl-pprint {};
 
+  arrows = callPackage ../development/libraries/haskell/arrows {};
+
   asn1Data = callPackage ../development/libraries/haskell/asn1-data {};
 
   AspectAG = callPackage ../development/libraries/haskell/AspectAG {};
@@ -466,7 +470,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   bimap = callPackage ../development/libraries/haskell/bimap {};
 
-  binary = callPackage ../development/libraries/haskell/binary {};
+  binary_hackage = callPackage ../development/libraries/haskell/binary {};
+  binary = self.binary_hackage; # core package since ghc-7.2.1
 
   binaryShared = callPackage ../development/libraries/haskell/binary-shared {};
 
@@ -485,6 +490,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   blazeHtml = callPackage ../development/libraries/haskell/blaze-html {};
 
   blazeTextual = callPackage ../development/libraries/haskell/blaze-textual {};
+
+  bloomfilter = callPackage ../development/libraries/haskell/bloomfilter {};
 
   bmp = callPackage ../development/libraries/haskell/bmp {};
 
@@ -710,11 +717,13 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   ghcSybUtils = callPackage ../development/libraries/haskell/ghc-syb-utils {};
 
+  gio = callPackage ../development/libraries/haskell/gio {};
+
   gitit = callPackage ../development/libraries/haskell/gitit {};
 
   glade = callPackage ../development/libraries/haskell/glade {
     inherit (pkgs.gnome) libglade;
-    gtkC = pkgs.gnome.gtk;
+    gtkC = pkgs.gtk;
     libc = pkgs.stdenv.gcc.libc;
   };
 
@@ -746,7 +755,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   GLUT = self.GLUT_2_3_0_0;
 
   gtk = callPackage ../development/libraries/haskell/gtk {
-    inherit (pkgs.gtkLibs) gtk;
+    inherit (pkgs) gtk;
     libc = pkgs.stdenv.gcc.libc;
   };
 
@@ -762,6 +771,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   graphviz = callPackage ../development/libraries/haskell/graphviz {
     fgl = self.fgl_5_4_2_4;
+    polyparse = self.polyparse_1_7;
   };
 
   hakyll = callPackage ../development/libraries/haskell/hakyll {};
@@ -793,7 +803,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   haskellSrc_1_0_1_5 = callPackage ../development/libraries/haskell/haskell-src/1.0.1.5.nix {};
   haskellSrc = self.haskellSrc_1_0_1_5;
 
-  haskellSrcExts = callPackage ../development/libraries/haskell/haskell-src-exts/default.nix {};
+  haskellSrcExts = callPackage ../development/libraries/haskell/haskell-src-exts {};
 
   haskellSrcMeta = callPackage ../development/libraries/haskell/haskell-src-meta {};
 
@@ -936,13 +946,13 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   jsonTypes = callPackage ../development/libraries/haskell/jsonTypes {};
 
-  languageJavascript = callPackage ../development/libraries/haskell/language-javascript {
-    alex = self.alex_3_0_1;
-  };
+  languageJavascript = callPackage ../development/libraries/haskell/language-javascript {};
 
   languageHaskellExtract = callPackage ../development/libraries/haskell/language-haskell-extract {};
 
   largeword = callPackage ../development/libraries/haskell/largeword {};
+
+  lazysmallcheck = callPackage ../development/libraries/haskell/lazysmallcheck {};
 
   leksahServer = callPackage ../development/libraries/haskell/leksah/leksah-server.nix {};
 
@@ -979,8 +989,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   MonadCatchIOTransformers = callPackage ../development/libraries/haskell/MonadCatchIO-transformers {};
 
   monadControl_0_2_0_3 = callPackage ../development/libraries/haskell/monad-control/0.2.0.3.nix {};
-  monadControl_0_3_1 = callPackage ../development/libraries/haskell/monad-control/0.3.1.nix {};
-  monadControl = self.monadControl_0_3_1;
+  monadControl_0_3_1_1 = callPackage ../development/libraries/haskell/monad-control/0.3.1.1.nix {};
+  monadControl = self.monadControl_0_3_1_1;
 
   monadLoops = callPackage ../development/libraries/haskell/monad-loops {};
 
@@ -1019,9 +1029,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   murmurHash = callPackage ../development/libraries/haskell/murmur-hash {};
 
-  mwcRandom_0_10_0_1 = callPackage ../development/libraries/haskell/mwc-random/0.10.0.1.nix {};
-  mwcRandom_0_12_0_0 = callPackage ../development/libraries/haskell/mwc-random/0.12.0.0.nix {};
-  mwcRandom = self.mwcRandom_0_12_0_0;
+  mwcRandom = callPackage ../development/libraries/haskell/mwc-random {};
 
   NanoProlog = callPackage ../development/libraries/haskell/NanoProlog {};
 
@@ -1064,7 +1072,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   pandocTypes = callPackage ../development/libraries/haskell/pandoc-types {};
 
   pango = callPackage ../development/libraries/haskell/pango {
-    inherit (pkgs.gtkLibs) pango;
+    inherit (pkgs) pango;
     libc = pkgs.stdenv.gcc.libc;
   };
 
@@ -1091,13 +1099,17 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   pcreLight = callPackage ../development/libraries/haskell/pcre-light {};
 
+  permutation = callPackage ../development/libraries/haskell/permutation {};
+
   persistent = callPackage ../development/libraries/haskell/persistent {};
 
   persistentSqlite = callPackage ../development/libraries/haskell/persistent-sqlite {};
 
   persistentTemplate = callPackage ../development/libraries/haskell/persistent-template {};
 
-  polyparse = callPackage ../development/libraries/haskell/polyparse/default.nix {};
+  polyparse_1_7 = callPackage ../development/libraries/haskell/polyparse/1.7.nix {};
+  polyparse_1_8 = callPackage ../development/libraries/haskell/polyparse/1.8.nix {};
+  polyparse = self.polyparse_1_8;
 
   poolConduit = callPackage ../development/libraries/haskell/pool-conduit {};
 
@@ -1205,6 +1217,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   resourcePool = callPackage ../development/libraries/haskell/resource-pool {};
 
+  resourcet = callPackage ../development/libraries/haskell/resourcet {};
+
   RSA = callPackage ../development/libraries/haskell/RSA {};
 
   safe = callPackage ../development/libraries/haskell/safe {};
@@ -1219,10 +1233,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   smallcheck = callPackage ../development/libraries/haskell/smallcheck {};
 
-  snapCore = callPackage ../development/libraries/haskell/snap/core.nix {
-    mwcRandom = self.mwcRandom_0_10_0_1;
-    unorderedContainers = self.unorderedContainers_0_1_4_6;
-  };
+  snapCore = callPackage ../development/libraries/haskell/snap/core.nix {};
 
   snapServer = callPackage ../development/libraries/haskell/snap/server.nix {};
 
@@ -1295,6 +1306,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   storableRecord = callPackage ../development/libraries/haskell/storable-record {};
 
+  Stream = callPackage ../development/libraries/haskell/Stream {};
+
   strictConcurrency = callPackage ../development/libraries/haskell/strictConcurrency {};
 
   svgcairo = callPackage ../development/libraries/haskell/svgcairo {
@@ -1321,7 +1334,9 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   terminfo = callPackage ../development/libraries/haskell/terminfo {};
 
-  testFramework = callPackage ../development/libraries/haskell/test-framework {};
+  testFramework_0_6 = callPackage ../development/libraries/haskell/test-framework/0.6.nix {};
+  testFramework_0_5 = callPackage ../development/libraries/haskell/test-framework/0.5.nix {};
+  testFramework = self.testFramework_0_6;
 
   testFrameworkHunit = callPackage ../development/libraries/haskell/test-framework-hunit {};
 
@@ -1365,7 +1380,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   tlsExtra = callPackage ../development/libraries/haskell/tls-extra {};
 
   transformers_0_2_2_0 = callPackage ../development/libraries/haskell/transformers/0.2.2.0.nix {};
-  transformers = self.transformers_0_2_2_0;
+  transformers_0_3_0_0 = callPackage ../development/libraries/haskell/transformers/0.3.0.0.nix {};
+  transformers = self.transformers_0_3_0_0;
 
   transformersBase = callPackage ../development/libraries/haskell/transformers-base {};
 
@@ -1381,9 +1397,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
 
   unixCompat = callPackage ../development/libraries/haskell/unix-compat {};
 
-  unorderedContainers_0_1_4_6 = callPackage ../development/libraries/haskell/unordered-containers/0.1.4.6.nix {};
-  unorderedContainers_0_2_0_0 = callPackage ../development/libraries/haskell/unordered-containers/0.2.0.0.nix {};
-  unorderedContainers = self.unorderedContainers_0_2_0_0;
+  unorderedContainers = callPackage ../development/libraries/haskell/unordered-containers {};
 
   url = callPackage ../development/libraries/haskell/url {};
 
@@ -1517,11 +1531,15 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
   };
   zlib = self.zlib_0_5_3_3;
 
-  zlibBindings = callPackage ../development/libraries/haskell/zlib-bindings {};
+  zlibBindings_0_0_3_2 = callPackage ../development/libraries/haskell/zlib-bindings/0.0.3.2.nix {};
+  zlibBindings_0_1_0 = callPackage ../development/libraries/haskell/zlib-bindings/0.1.0.nix {};
+  zlibBindings = self.zlibBindings_0_0_3_2;
 
   zlibConduit = callPackage ../development/libraries/haskell/zlib-conduit {};
 
-  zlibEnum = callPackage ../development/libraries/haskell/zlib-enum {};
+  zlibEnum = callPackage ../development/libraries/haskell/zlib-enum {
+    zlibBindings = self.zlibBindings_0_0_3_2;
+  };
 
   Zwaluw = callPackage ../development/libraries/haskell/Zwaluw {};
 
@@ -1603,9 +1621,16 @@ let result = let callPackage = x : y : modifyPrio (newScope result.final x y);
     tar = self.tar_0_3_2_0;
   };
 
-  leksah = callPackage ../applications/editors/leksah {};
+  leksah = callPackage ../applications/editors/leksah {
+    QuickCheck = self.QuickCheck2;
+  };
 
-  mathblog = callPackage ../applications/misc/mathblog {};
+  mathblog = callPackage ../applications/misc/mathblog {
+    testFramework = self.testFramework_0_5;
+    testFrameworkHunit = self.testFrameworkHunit.override {
+      testFramework = self.testFramework_0_5;
+    };
+  };
 
   xmobar = callPackage ../applications/misc/xmobar {
     parsec = self.parsec3;

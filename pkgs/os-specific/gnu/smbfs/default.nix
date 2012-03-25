@@ -1,7 +1,7 @@
 { fetchcvs, stdenv, hurd, machHeaders, samba }:
 
 let
-  date = "2011-11-14";
+  date = "2012-03-15";
   samba_patched = stdenv.lib.overrideDerivation samba (attrs: {
     patches = attrs.patches ++ [ ./samba-without-byte-range-locks.patch ];
   });
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   src = fetchcvs {
     cvsRoot = ":pserver:anonymous@cvs.savannah.nongnu.org:/sources/hurdextras";
     module = "smbfs";
-    sha256 = "b36765fde77c6cafb04ab1ff44b19bb00b490064b5a02b9ced7828170ab47a70";
+    sha256 = "5941d1a5da4488cbf0efe9aa0b41fe4ff5ba57b84ed24f7ff7c0feda4501d3e3";
     inherit date;
   };
 

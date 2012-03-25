@@ -4,8 +4,8 @@
 
 cabal.mkDerivation (self: {
   pname = "Agda";
-  version = "2.3.0";
-  sha256 = "1p0cwf3d146z73gp49cm8fmk33hcbjsvyijbakm1871ssc5i73k0";
+  version = "2.3.0.1";
+  sha256 = "0f2kc3by2z01g8bqc446hyzx9sidx6qi0p7h5bcpjf8iryk1dh2w";
   isLibrary = true;
   isExecutable = true;
   buildDepends = [
@@ -18,9 +18,6 @@ cabal.mkDerivation (self: {
     description = "A dependently typed functional programming language and proof assistant";
     license = "unknown";
     platforms = self.ghc.meta.platforms;
-    maintainers = [
-      self.stdenv.lib.maintainers.andres
-      self.stdenv.lib.maintainers.simons
-    ];
+    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })

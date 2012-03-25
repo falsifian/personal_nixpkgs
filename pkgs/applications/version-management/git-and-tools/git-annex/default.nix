@@ -1,23 +1,25 @@
 { stdenv, fetchurl, curl, dataenc, findutils, ghc, git, hS3, hslogger, HTTP, hxt
 , ikiwiki, json, libuuid, MissingH, monadControl, mtl, network, pcreLight, perl
-, QuickCheck2, rsync, SHA, testpack, utf8String, which, liftedBase, coreutils, IfElse
+, QuickCheck2, rsync, SHA, testpack, utf8String, which, liftedBase, coreutils
+, IfElse, bloomfilter
 }:
 
 let
-  version = "3.20120230";
+  version = "3.20120315";
 in
 stdenv.mkDerivation {
   name = "git-annex-${version}";
 
   src = fetchurl {
-    url = "http://ftp.de.debian.org/debian/pool/main/g/git-annex/git-annex_${version}.tar.gz";
-    sha256 = "2406fd1405bcdc30cb57ba0455919b5bad2be64bcfe6b6f921cd6ea1797a66fa";
+    url = "http://git.kitenet.net/?p=git-annex.git;a=snapshot;sf=tgz;h=refs/tags/${version}";
+    sha256 = "eeefca150f7f86a9373ac60cef9be22fe6fcb03fd13fda54793a4f8d46b747a1";
+    name = "git-annex-${version}.tar.gz";
   };
 
   buildInputs = [
     curl dataenc findutils ghc git hS3 hslogger HTTP hxt ikiwiki json
     libuuid MissingH monadControl mtl network pcreLight perl QuickCheck2
-    rsync SHA testpack utf8String which liftedBase IfElse
+    rsync SHA testpack utf8String which liftedBase IfElse bloomfilter
   ];
 
   checkTarget = "test";
@@ -27,7 +29,7 @@ stdenv.mkDerivation {
   preConfigure = ''
     makeFlagsArray=( PREFIX=$out )
     sed -i -e 's|#!/usr/bin/perl|#!${perl}/bin/perl|' mdwn2man
-    sed -i -e 's|"cp |"${coreutils}/bin/cp |' -e 's|"rm -f |"${coreutils}/bin/rm -f |' -e 's|, test_addurl||' test.hs
+    sed -i -e 's|"cp |"${coreutils}/bin/cp |' -e 's|"rm -f |"${coreutils}/bin/rm -f |' test.hs
   '';
 
   meta = {

@@ -48,6 +48,10 @@ let
       homepage = http://www.ghostscript.com/;
       description = "GPL Ghostscript, a PostScript interpreter";
     };
+
+    preConfigure = ''
+      rm -R libpng jpeg lcms tiff freetype
+    '';
     patches = [ ./purity-9.05.patch ];
   };
 
@@ -75,7 +79,8 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optional cupsSupport cups;
 
   CFLAGS = "-fPIC";
-  NIX_LDFLAGS = "-lz -rpath=${freetype}/lib";
+  NIX_LDFLAGS =
+    "-lz -rpath${ if stdenv.isDarwin then " " else "="}${freetype}/lib";
 
   patches = variant.patches ++ [ ./urw-font-files.patch ];
 
@@ -85,7 +90,7 @@ stdenv.mkDerivation rec {
 
     # Don't install stuff in the Cups store path.
     makeFlagsArray=(CUPSSERVERBIN=$out/lib/cups CUPSSERVERROOT=$out/etc/cups CUPSDATA=$out/share/cups)
-  '';
+  '' + stdenv.lib.optionalString (variant ? preConfigure) variant.preConfigure;
 
   configureFlags =
     (if x11Support then [ "--with-x" ] else [ "--without-x" ]) ++
