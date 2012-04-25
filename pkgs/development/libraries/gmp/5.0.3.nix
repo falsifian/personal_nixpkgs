@@ -1,6 +1,6 @@
 { stdenv, fetchurl, m4, cxx ? true }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (rec {
   name = "gmp-5.0.3";
 
   src = fetchurl {
@@ -51,3 +51,13 @@ stdenv.mkDerivation rec {
     platforms = stdenv.lib.platforms.all;
   };
 }
+
+//
+
+(if stdenv.isFreeBSD
+ then {
+   # The FreeBSD boxes at hydra.nixos.org are VMs run in QEMU.  This patch
+   # allows GMP to work correctly in that environment.
+   patches = [ ./ignore-bad-cpuid.patch ];
+ }
+ else { }))

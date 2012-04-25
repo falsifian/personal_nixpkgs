@@ -4,7 +4,7 @@ let pythonPackages = python.modules // rec {
 
   inherit python;
 
-  inherit (pkgs) fetchurl fetchsvn stdenv;
+  inherit (pkgs) fetchurl fetchsvn fetchgit stdenv;
 
 
   buildPythonPackage = import ../development/python-modules/generic {
@@ -201,6 +201,25 @@ let pythonPackages = python.modules // rec {
   };
 
 
+  bugz = buildPythonPackage (rec {
+    name = "bugz-0.9.3";
+
+    src = fetchgit {
+      url = "git://github.com/williamh/pybugz.git";
+      rev = "refs/tags/0.9.3";
+    };
+
+    propagatedBuildInputs = [ argparse python.modules.ssl ];
+
+    doCheck = false;
+
+    meta = {
+      homepage = http://www.liquidx.net/pybugz/;
+      description = "Command line interface for Bugzilla";
+    };
+  });
+
+
   carrot = buildPythonPackage rec {
     name = "carrot-0.10.7";
 
@@ -368,6 +387,41 @@ let pythonPackages = python.modules // rec {
     };
   };
 
+  dulwich = buildPythonPackage rec {
+    name = "dulwich-0.8.1";
+
+    src = fetchurl {
+      url = "http://samba.org/~jelmer/dulwich/${name}.tar.gz";
+      sha256 = "1a1619e9c7e63fe9bdc93356ee893be1016b7ea12ad953f4e1f1f5c0c5056ee8";
+    };
+
+    buildPhase = "make build";
+    installCommand = ''
+      python setup.py install --prefix="$out" --root=/ --record="$out/lib/${python.libPrefix}/site-packages/dulwich/list.txt" --single-version-externally-managed
+    '';
+    doCheck = false;
+
+    meta = {
+      description = "Simple Python implementation of the Git file formats and protocols.";
+      homepage = http://samba.org/~jelmer/dulwich/;
+    };
+  };
+
+  hggit = buildPythonPackage rec {
+    name = "hg-git-0.3.1";
+
+    src = fetchurl {
+      url = "http://pypi.python.org/packages/source/h/hg-git/${name}.tar.gz";
+      md5 = "4b15867a07abb0be985177581ce64cee";
+    };
+
+    propagatedBuildInputs = [ dulwich ];
+
+    meta = {
+      description = "Push and pull from a Git server using Mercurial.";
+      homepage = http://hg-git.github.com/;
+    };
+  };
 
   docutils = buildPythonPackage rec {
     name = "docutils-0.8.1";
@@ -1531,11 +1585,11 @@ let pythonPackages = python.modules // rec {
 
 
   pysvn = pkgs.stdenv.mkDerivation {
-    name = "pysvn-1.7.2";
+    name = "pysvn-1.7.6";
 
     src = fetchurl {
-      url = "http://pysvn.barrys-emacs.org/source_kits/pysvn-1.7.2.tar.gz";
-      sha256 = "2b2980d200515e754e00a12d99dbce25c1ea90fddf8cba2bfa354c9305c5e455";
+      url = "http://pysvn.barrys-emacs.org/source_kits/pysvn-1.7.6.tar.gz";
+      sha256 = "0wwb9h3rw2r8hzqya8mv5z8pgjpa6y3i15a3cccdv2mil44289a7";
     };
 
     buildInputs = [ python pkgs.subversion pkgs.apr pkgs.aprutil pkgs.expat pkgs.neon pkgs.openssl ]
@@ -1549,6 +1603,7 @@ let pythonPackages = python.modules // rec {
       python setup.py backport
       python setup.py configure \
         --apr-inc-dir=${pkgs.apr}/include/apr-1 \
+        --apu-inc-dir=${pkgs.aprutil}/include/apr-1 \
         --apr-lib-dir=${pkgs.apr}/lib \
         --svn-root-dir=${pkgs.subversion}
     '' + (if !stdenv.isDarwin then "" else ''
@@ -1945,6 +2000,20 @@ let pythonPackages = python.modules // rec {
       homepage = http://code.google.com/p/sqlalchemy-migrate/;
       description = "Schema migration tools for SQLAlchemy";
     };
+  };
+
+  svneverever =  buildPythonPackage rec {
+    name = "svneverever-778489a8";
+
+    src = pkgs.fetchgit {
+      url = git://git.goodpoint.de/svneverever.git;
+      rev = "778489a8c6f07825fb18c9da3892a781c3d659ac";
+      sha256 = "41c9da1dab2be7b60bff87e618befdf5da37c0a56287385cb0cbd3f91e452bb6";
+    };
+
+    propagatedBuildInputs = [ pysvn argparse ];
+
+    doCheck = false;
   };
 
   taskcoach = buildPythonPackage rec {

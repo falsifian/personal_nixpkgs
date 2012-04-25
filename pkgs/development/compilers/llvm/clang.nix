@@ -1,11 +1,11 @@
-{ stdenv, fetchurl, perl, groff, llvm, cmake, darwinInstallNameToolUtility }:
+{ stdenv, fetchurl, perl, groff, llvm, cmake }:
 
 let version = "3.0"; in
 
 stdenv.mkDerivation {
   name = "clang-${version}";
 
-  buildInputs = [ perl llvm groff cmake ] ++ stdenv.lib.optional stdenv.isDarwin darwinInstallNameToolUtility;
+  buildInputs = [ perl llvm groff cmake ];
 
   patches = stdenv.lib.optionals (stdenv.gcc.libc != null) 
     [ ./clang-include-paths.patch ./clang-ld-flags.patch ];
@@ -17,7 +17,7 @@ stdenv.mkDerivation {
       lib/Driver/ToolChains.cpp
   '';
 
-  cmakeFlags = [ "-DCLANG_PATH_TO_LLVM_BUILD=${llvm}" "-DCMAKE_BUILD_TYPE=Release" ];
+  cmakeFlags = [ "-DCLANG_PATH_TO_LLVM_BUILD=${llvm}" "-DCMAKE_BUILD_TYPE=Release" "-DLLVM_TARGETS_TO_BUILD=all"];
 
   enableParallelBuilding = true;
 
