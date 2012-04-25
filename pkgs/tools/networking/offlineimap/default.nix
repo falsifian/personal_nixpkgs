@@ -1,11 +1,11 @@
 { fetchgit, buildPythonPackage }:
 
 buildPythonPackage {
-  name = "offlineimap-6.5.2.1";
+  name = "offlineimap-6.5.3.1x";
 
   src = fetchgit {
     url = "https://github.com/spaetz/offlineimap.git";
-    rev = "a242b985bfd6e1c7849834b5da60bfd7f57b204a";  # 6.5.2.1 release
+    rev = "895e709bf23eea3b8f546f240317580e34251cf3";  # upstream cert_fingerprint fix
   };
 
   doCheck = false;
@@ -18,7 +18,7 @@ buildPythonPackage {
     find | xargs touch
   '';
 
-  patches = [ ./detect_ssl.patch ];
+  patches = [ ];
 
   meta = {
     description = "IMAP to local files bridge";
