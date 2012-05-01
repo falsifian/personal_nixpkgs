@@ -674,6 +674,7 @@ let
   figlet = callPackage ../tools/misc/figlet { };
 
   file = callPackage ../tools/misc/file { };
+  file511 = callPackage ../tools/misc/file/511.nix { };
 
   fileschanged = callPackage ../tools/misc/fileschanged { };
 
@@ -1002,6 +1003,8 @@ let
   mdbtools = callPackage ../tools/misc/mdbtools { };
 
   mdbtools_git = callPackage ../tools/misc/mdbtools/git.nix { };
+
+  minecraft = callPackage ../games/minecraft { };
 
   miniupnpc = callPackage ../tools/networking/miniupnpc { };
 
@@ -2756,8 +2759,6 @@ let
   python26 = callPackage ../development/interpreters/python/2.6 { };
 
   python27 = callPackage ../development/interpreters/python/2.7 { };
-
-  python31 = callPackage ../development/interpreters/python/3.1 { };
 
   python32 = callPackage ../development/interpreters/python/3.2 { };
 
@@ -6569,6 +6570,13 @@ let
   };
 
   emacs23 = callPackage ../applications/editors/emacs-23 {
+    stdenv =
+      if stdenv.isDarwin
+      /* On Darwin, use Apple-GCC, otherwise:
+           configure: error: C preprocessor "cc -E -no-cpp-precomp" fails sanity check */
+      then overrideGCC stdenv gccApple
+      else stdenv;
+
     # use override to select the appropriate gui toolkit
     libXaw = if stdenv.isDarwin then xlibs.libXaw else null;
     Xaw3d = null;
@@ -6737,19 +6745,13 @@ let
 
   firefoxWrapper = wrapFirefox { browser = pkgs.firefox; };
 
-  firefoxPkgs = pkgs.firefox11Pkgs;
+  firefoxPkgs = pkgs.firefox12Pkgs;
 
   firefox36Pkgs = callPackage ../applications/networking/browsers/firefox/3.6.nix {
     inherit (gnome) libIDL;
   };
 
   firefox36Wrapper = wrapFirefox { browser = firefox36Pkgs.firefox; };
-
-  firefox9Pkgs = callPackage ../applications/networking/browsers/firefox/9.0.nix {
-    inherit (gnome) libIDL;
-  };
-
-  firefox9Wrapper = wrapFirefox { browser = firefox9Pkgs.firefox; };
 
   firefox10Pkgs = callPackage ../applications/networking/browsers/firefox/10.0.nix {
     inherit (gnome) libIDL;
@@ -6762,6 +6764,12 @@ let
   };
 
   firefox11Wrapper = wrapFirefox { browser = firefox11Pkgs.firefox; };
+
+  firefox12Pkgs = callPackage ../applications/networking/browsers/firefox/12.0.nix {
+    inherit (gnome) libIDL;
+  };
+
+  firefox12Wrapper = wrapFirefox { browser = firefox12Pkgs.firefox; };
 
   flac = callPackage ../applications/audio/flac { };
 
@@ -6935,6 +6943,14 @@ let
   hugin = callPackage ../applications/graphics/hugin { };
 
   hydrogen = callPackage ../applications/audio/hydrogen { };
+
+  i3 = callPackage ../applications/window-managers/i3 { };
+
+  i3lock = callPackage ../applications/window-managers/i3/lock.nix {
+    cairo = cairo.override { xcbSupport = true; };
+  };
+
+  i3status = callPackage ../applications/window-managers/i3/status.nix { };
 
   i810switch = callPackage ../os-specific/linux/i810switch { };
 
@@ -8421,6 +8437,8 @@ let
 
   darcnes = callPackage ../misc/emulators/darcnes { };
 
+  dbacl = callPackage ../tools/misc/dbacl { };
+
   dblatex = callPackage ../tools/typesetting/tex/dblatex { };
 
   dosbox = callPackage ../misc/emulators/dosbox { };
@@ -8505,6 +8523,11 @@ let
   nixUnstable = callPackage ../tools/package-management/nix/unstable.nix {
     storeDir = getConfig [ "nix" "storeDir" ] "/nix/store";
     stateDir = getConfig [ "nix" "stateDir" ] "/nix/var";
+    stdenv =
+      if stdenv.isDarwin
+      # When building the Perl bindings, `-no-cpp-precomp' is used.
+      then overrideGCC stdenv gccApple
+      else stdenv;
   };
 
   nixSqlite = nixUnstable;

@@ -1,28 +1,20 @@
-{ fetchgit, buildPythonPackage }:
+{ fetchurl, buildPythonPackage }:
 
-buildPythonPackage {
-  name = "offlineimap-6.5.3.1x";
+buildPythonPackage rec {
+  version = "6.5.3";
+  name = "offlineimap-${version}";
 
-  src = fetchgit {
-    url = "https://github.com/spaetz/offlineimap.git";
-    rev = "895e709bf23eea3b8f546f240317580e34251cf3";  # upstream cert_fingerprint fix
+  src = fetchurl {
+    url = "https://github.com/spaetz/offlineimap/tarball/v${version}";
+    name = "${name}.tar.bz";
+    sha256 = "8717a56e6244b47b908b23b598efb3470d74450ecd881b6d3573d8aec4a5db38";
   };
 
   doCheck = false;
 
-  # Copied from applications/graphics/jbrout, to avoid the following error message:
-  #   File "/nix/store/vzpvrymynp4n93bznxha6hadj0ww68vx-python-2.7.1/lib/python2.7/zipfile.py", line 348, in FileHeader
-  #     len(filename), len(extra))
-  # struct.error: ushort format requires 0 <= number <= USHRT_MAX
-  preConfigure = ''
-    find | xargs touch
-  '';
-
-  patches = [ ];
-
   meta = {
-    description = "IMAP to local files bridge";
-    homepage = "http://software.complete.org/software/projects/show/offlineimap";
+    description = "OfflineImap synchronizes emails between two repositories, so that you can read the same mailbox from multiple computers.";
+    homepage = "http://offlineimap.org";
     license = "GPLv2+";
   };
 }
