@@ -42,9 +42,9 @@ let
         throw "no x86_64 debugging version available"
       else {
         # -> http://labs.adobe.com/downloads/flashplayer10.html
-        version = "11.1.102.55";
-        url = http://fpdownload.macromedia.com/get/flashplayer/pdc/11.1.102.55/install_flash_player_11_linux.x86_64.tar.gz;
-        sha256 = "09swldv174z23pnixy9fxkw084qkl3bbrxfpf159fbjdgvwihn1l";
+        version = "11.2.202.235";
+        url = http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.235/install_flash_player_11_linux.x86_64.tar.gz;
+        sha256 = "43f5d076948eb4f9ef8c91e86ec18eb6c0ca931901e660b034ad769cb4361990";
       }
     else if stdenv.system == "i686-linux" then
       if debug then {
@@ -53,9 +53,9 @@ let
         url = http://fpdownload.macromedia.com/pub/flashplayer/updaters/11/flashplayer_11_plugin_debug.i386.tar.gz;
         sha256 = "1z3649lv9sh7jnwl8d90a293nkaswagj2ynhsr4xmwiy7c0jz2lk";
       } else {
-        version = "11.1.102.55";
-        url = "http://fpdownload.macromedia.com/get/flashplayer/pdc/11.1.102.55/install_flash_player_11_linux.i386.tar.gz";
-        sha256 = "08zdnl06lqyk2k3yq4lgphqd3ci2267448mghlv1p0hjrdq253k7";
+        version = "11.2.202.235";
+        url = "http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.235/install_flash_player_11_linux.i386.tar.gz";
+        sha256 = "3c687f0f05eaad30c7f034c107df2b692ea7494d5515c2238dbe10ea0735d56d";
       }
     else throw "Flash Player is not supported on this platform";
 
