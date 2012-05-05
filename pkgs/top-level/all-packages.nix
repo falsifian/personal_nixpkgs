@@ -3995,6 +3995,8 @@ let
 
   libdbusmenu_qt = callPackage ../development/libraries/libdbusmenu-qt { };
 
+  libdc1394 = callPackage ../development/libraries/libdc1394 { };
+
   libdevil = callPackage ../development/libraries/libdevil { };
 
   libdiscid = callPackage ../development/libraries/libdiscid { };
@@ -6469,6 +6471,10 @@ let
 
   compizconfig_python = callPackage ../applications/window-managers/compiz/config-python.nix { };
 
+  coriander = callPackage ../applications/video/coriander {
+    inherit (gnome) libgnomeui GConf;
+  };
+
   libcompizconfig = callPackage ../applications/window-managers/compiz/libcompizconfig.nix { };
 
   compiz_bcop = callPackage ../applications/window-managers/compiz/bcop.nix { };
@@ -7054,6 +7060,8 @@ let
     fftw = fftwSinglePrec;
   };
 
+  lci = callPackage ../applications/science/logic/lci {};
+
   ldcpp = callPackage ../applications/networking/p2p/ldcpp {
     inherit (gnome) libglade;
   };
@@ -7112,7 +7120,7 @@ let
     guiSupport = false;		# use mercurialFull to get hgk GUI
   };
 
-  mercurialFull = appendToName "full" (pkgs.mercurial.override { guiSupport = true; });
+  mercurialFull = lowPrio (appendToName "full" (pkgs.mercurial.override { guiSupport = true; }));
 
   merkaartor = callPackage ../applications/misc/merkaartor { };
 
